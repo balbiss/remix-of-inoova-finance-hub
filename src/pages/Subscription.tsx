@@ -235,7 +235,7 @@ export default function Subscription() {
                         </div>
 
                         <a
-                            href="https://wa.me/5511999999999"
+                            href="https://wa.me/5591982935558"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-8 rounded-[40px] border-2 border-dashed border-border/80 bg-transparent flex flex-col items-center text-center space-y-4 hover:border-primary/50 transition-colors group"
