@@ -81,19 +81,19 @@ export default function Auth() {
         className="w-full max-w-sm relative z-10"
       >
         {/* Glass Card */}
-        <div className="glass-card p-6 shadow-2xl">
+        <div className="glass-card p-5 shadow-2xl">
           {/* Logo */}
-          <div className="flex flex-col items-center justify-center gap-0 mb-0">
+          <div className="flex flex-col items-center justify-center gap-0 mb-2">
             <img
               src="/logo.png"
               alt="VENUX ASSESSOR"
-              className="w-48 h-auto object-contain drop-shadow-lg"
+              className="w-36 h-auto object-contain drop-shadow-lg"
             />
           </div>
 
           {/* Title */}
-          <div className="text-center mb-8 -mt-10">
-            <h1 className="text-2xl font-black text-foreground mb-2 mt-2 tracking-tight uppercase italic">
+          <div className="text-center mb-5">
+            <h1 className="text-2xl font-black text-foreground mb-1 mt-1 tracking-tight uppercase italic">
               {isLogin ? 'Assuma o' : 'Jornada'} <span className="text-primary">{isLogin ? 'Controle Total' : 'PRO'}</span>
             </h1>
             <p className="text-xs text-muted-foreground max-w-[200px] mx-auto leading-relaxed">
@@ -104,7 +104,7 @@ export default function Auth() {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-3">
+          <form onSubmit={handleSubmit} className="space-y-2.5">
             {!isLogin && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
@@ -177,8 +177,8 @@ export default function Auth() {
               </div>
             )}
 
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="pt-2">
-              <Button type="submit" className="w-full h-12 text-sm font-bold gap-2 gradient-primary rounded-xl shadow-lg shadow-primary/20" disabled={loading}>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="pt-1">
+              <Button type="submit" className="w-full h-11 text-sm font-bold gap-2 gradient-primary rounded-xl shadow-lg shadow-primary/20" disabled={loading}>
                 {loading ? (
                   <Loader2 className="w-5 h-4 animate-spin" />
                 ) : (
@@ -215,7 +215,7 @@ export default function Auth() {
           </motion.div>
 
           {/* Toggle */}
-          <p className="text-center mt-6 text-xs text-muted-foreground">
+          <p className="text-center mt-5 text-xs text-muted-foreground">
             {isLogin ? 'Novo por aqui?' : 'Já tem uma conta?'}
             <button
               type="button"
@@ -228,7 +228,7 @@ export default function Auth() {
           </p>
 
           {/* Trust Badge */}
-          <div className="flex items-center justify-center gap-1.5 mt-6 opacity-50">
+          <div className="flex items-center justify-center gap-1.5 mt-4 opacity-50">
             <Lock className="w-3 h-3" />
             <span className="text-[10px] font-medium">Seus dados estão protegidos</span>
           </div>
