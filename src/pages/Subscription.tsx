@@ -225,18 +225,27 @@ export default function Subscription() {
                                     Nossa plataforma utiliza o Stripe para garantir que todos os seus dados de pagamento estejam cifrados e seguros.
                                 </p>
                             </div>
-                            <Button variant="outline" className="w-full h-12 rounded-2xl font-bold border-muted-foreground/20 hover:bg-secondary">
-                                Central de Ajuda
+                            <Button
+                                variant="outline"
+                                className="w-full h-12 rounded-2xl font-bold border-muted-foreground/20 hover:bg-secondary"
+                                onClick={handleManageBilling}
+                            >
+                                Central de Faturamento
                             </Button>
                         </div>
 
-                        <div className="p-8 rounded-[40px] border-2 border-dashed border-border/80 bg-transparent flex flex-col items-center text-center space-y-4">
-                            <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center italic font-black text-muted-foreground">?</div>
+                        <a
+                            href="https://wa.me/5511999999999"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-8 rounded-[40px] border-2 border-dashed border-border/80 bg-transparent flex flex-col items-center text-center space-y-4 hover:border-primary/50 transition-colors group"
+                        >
+                            <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center italic font-black text-muted-foreground group-hover:bg-primary/20 group-hover:text-primary transition-colors">?</div>
                             <div>
-                                <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">Dúvida sobre o plano?</p>
+                                <p className="text-xs font-black text-muted-foreground uppercase tracking-widest group-hover:text-foreground transition-colors">Dúvida sobre o plano?</p>
                                 <p className="text-[10px] text-muted-foreground/60 font-medium mt-1">Nosso time responde em menos de 1 hora.</p>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
