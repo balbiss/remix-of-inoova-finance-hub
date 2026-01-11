@@ -1,12 +1,11 @@
 services:
-  venux-assessor:
+  venux-app:
+    image: venux-assessor:latest
     build:
       context: .
       args:
         - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
         - VITE_SUPABASE_PUBLISHABLE_KEY=${VITE_SUPABASE_PUBLISHABLE_KEY}
         - VITE_STRIPE_PUBLISHABLE_KEY=${VITE_STRIPE_PUBLISHABLE_KEY}
-    container_name: venux-assessor
     ports:
       - "8080:80"
-    restart: always
