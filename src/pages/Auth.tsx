@@ -78,21 +78,21 @@ export default function Auth() {
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-sm relative z-10"
+        className="w-full max-w-sm relative z-10 -mt-12"
       >
         {/* Glass Card */}
-        <div className="glass-card p-5 shadow-2xl">
+        <div className="glass-card pt-4 pb-5 px-5 shadow-2xl">
           {/* Logo */}
-          <div className="flex flex-col items-center justify-center gap-0 mb-2">
+          <div className="flex flex-col items-center justify-center gap-0 mb-1">
             <img
               src="/logo.png"
               alt="VENUX ASSESSOR"
-              className="w-36 h-auto object-contain drop-shadow-lg"
+              className="w-32 h-auto object-contain drop-shadow-lg"
             />
           </div>
 
           {/* Title */}
-          <div className="text-center mb-5">
+          <div className="text-center mb-4">
             <h1 className="text-2xl font-black text-foreground mb-1 mt-1 tracking-tight uppercase italic">
               {isLogin ? 'Assuma o' : 'Jornada'} <span className="text-primary">{isLogin ? 'Controle Total' : 'PRO'}</span>
             </h1>
