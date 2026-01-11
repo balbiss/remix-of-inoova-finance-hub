@@ -7,5 +7,20 @@ services:
         - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
         - VITE_SUPABASE_PUBLISHABLE_KEY=${VITE_SUPABASE_PUBLISHABLE_KEY}
         - VITE_STRIPE_PUBLISHABLE_KEY=${VITE_STRIPE_PUBLISHABLE_KEY}
-    ports:
-      - "8080:80"
+    networks:
+      - inoovawebpro
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.venux-https.rule=Host(`venuxacessor.inoovaweb.com.br`)
+        - traefik.http.routers.venux-https.entrypoints=websecure
+        - traefik.http.routers.venux-https.tls.certresolver=letsencryptresolver
+        - traefik.http.routers.venux-https.service=venux
+        - traefik.http.services.venux.loadbalancer.server.port=80
+
+networks:
+  inoovawebpro:
+    external: true
+    name: inoovawebpro
