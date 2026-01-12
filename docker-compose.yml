@@ -1,12 +1,7 @@
 services:
   venux-web:
-    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/remix-of-inoova-finance-hub:latest
-    build:
-      context: .
-      args:
-        - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
-        - VITE_SUPABASE_PUBLISHABLE_KEY=${VITE_SUPABASE_PUBLISHABLE_KEY}
-        - VITE_STRIPE_PUBLISHABLE_KEY=${VITE_STRIPE_PUBLISHABLE_KEY}
+    image: ghcr.io/balbiss/remix-of-inoova-finance-hub:latest
+    # build section removed for Swarm compatibility
     networks:
       - inoovawebpro
     deploy:
