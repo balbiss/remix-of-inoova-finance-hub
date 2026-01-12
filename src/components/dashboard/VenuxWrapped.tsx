@@ -124,12 +124,12 @@ export function VenuxWrapped({ open, onClose }: VenuxWrappedProps) {
 
     return (
         <AnimatePresence>
-            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 sm:p-6">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                    className="relative w-full max-w-sm bg-card rounded-[40px] border border-border shadow-2xl overflow-hidden"
+                    className="relative w-full max-w-sm bg-card rounded-[32px] border border-border shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
                 >
                     {/* Progress Bar */}
                     <div className="absolute top-0 left-0 w-full h-1 bg-secondary flex">
@@ -143,9 +143,9 @@ export function VenuxWrapped({ open, onClose }: VenuxWrappedProps) {
 
                     <button
                         onClick={onClose}
-                        className="absolute top-4 right-4 p-2 rounded-full bg-secondary/50 text-foreground hover:bg-secondary transition-all z-10"
+                        className="absolute top-4 right-4 p-3 sm:p-2 rounded-full bg-secondary/80 text-foreground hover:bg-secondary transition-all z-20 shadow-lg"
                     >
-                        <X className="w-4 h-4" />
+                        <X className="w-5 h-5 sm:w-4 h-4" />
                     </button>
 
                     <div className="p-8 pt-12 min-h-[480px] flex flex-col justify-center">

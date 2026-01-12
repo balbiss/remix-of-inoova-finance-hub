@@ -66,7 +66,11 @@ export function AddSubscriptionSheet({ open, onOpenChange }: AddSubscriptionShee
 
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
-            <SheetContent side="right" className="w-full sm:max-w-md bg-card border-l border-border pt-10">
+            <SheetContent
+                side="bottom"
+                className="h-[90vh] sm:h-auto sm:max-w-md bg-card border-border rounded-t-[32px] sm:rounded-l-none sm:rounded-l-xl p-6 overflow-y-auto"
+            >
+                <div className="bottom-sheet-handle lg:hidden mb-4" />
                 <SheetHeader className="mb-8">
                     <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4">
                         <ShoppingBag className="w-6 h-6" />

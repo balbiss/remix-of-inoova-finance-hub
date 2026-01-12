@@ -55,13 +55,13 @@ export default function MySubscriptions() {
 
     return (
         <MainLayout>
-            <div className="px-4 lg:px-10 py-8 lg:py-12 max-w-[1400px] space-y-10">
+            <div className="px-3 lg:px-8 py-4 lg:py-8 pb-24 lg:pb-12 max-w-[1400px] mx-auto space-y-8">
                 <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                     >
-                        <h1 className="text-3xl lg:text-5xl font-black text-foreground tracking-tighter uppercase italic">
+                        <h1 className="text-2xl lg:text-4xl font-black text-foreground tracking-tighter uppercase italic">
                             Minhas <span className="text-primary">Assinaturas</span>
                         </h1>
                         <p className="text-muted-foreground mt-2 font-medium">Controle seus gastos fixos e evite surpresas na fatura.</p>

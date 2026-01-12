@@ -74,7 +74,7 @@ export default function Profile() {
 
   return (
     <MainLayout>
-      <div className="px-4 lg:px-10 py-6 lg:py-10 max-w-[1400px]">
+      <div className="px-3 lg:px-8 py-4 lg:py-8 pb-24 lg:pb-12 max-w-[1400px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
