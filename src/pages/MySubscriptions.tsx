@@ -134,7 +134,7 @@ export default function MySubscriptions() {
                                         <div className="flex items-center gap-2 text-muted-foreground">
                                             <Calendar className="w-3.5 h-3.5" />
                                             <span className="text-[10px] font-bold uppercase tracking-wider">
-                                                Vence em {format(new Date(sub.next_billing_date), 'dd/MM', { locale: ptBR })}
+                                                Vence em {format(new Date(sub.next_billing_date + 'T12:00:00'), 'dd/MM', { locale: ptBR })}
                                             </span>
                                         </div>
                                         <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">

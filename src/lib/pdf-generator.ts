@@ -113,7 +113,7 @@ export const generateTransactionsPDF = async (
 
         // Tabela de Dados
         const rows = transactions.map(t => [
-            t.date ? format(new Date(t.date), "dd/MM/yyyy") : '---',
+            t.date ? format(new Date(t.date + 'T12:00:00'), "dd/MM/yyyy") : '---',
             t.description || 'Sem descrição',
             t.category || 'Outros',
             t.type === 'income' ? 'Receita' : 'Despesa',

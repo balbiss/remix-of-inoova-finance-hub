@@ -5,7 +5,7 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGri
 import { useMemo } from 'react';
 import { formatCurrency } from '@/lib/utils-format';
 
-const months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -26,7 +26,7 @@ export function AnnualProjectionChart() {
   const monthlyTotals = useMemo(() => {
     const totals = Array(12).fill(0);
     transactions.forEach((t: any) => {
-      const date = new Date(t.date);
+      const date = new Date(t.date + 'T12:00:00');
       if (date.getFullYear() === year) {
         const idx = date.getMonth();
         totals[idx] += Number(t.amount);

@@ -227,7 +227,7 @@ export default function Profile() {
                     <Button
                       onClick={() => {
                         const monthTransactions = transactions.filter(t => {
-                          const date = new Date(t.date);
+                          const date = new Date(t.date + 'T12:00:00');
                           return date >= startOfMonth(new Date()) && date <= endOfMonth(new Date());
                         });
                         generateTransactionsCSV(monthTransactions, profile?.full_name || 'Usuario');
@@ -312,7 +312,7 @@ export default function Profile() {
                       </Button>
                     </div>
                     <p className="text-base lg:text-lg font-black text-foreground tracking-tighter">
-                      {profile?.data_expiracao ? new Date(profile.data_expiracao).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }) : '---'}
+                      {profile?.data_expiracao ? new Date(profile.data_expiracao + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }) : '---'}
                     </p>
                   </div>
                 )}

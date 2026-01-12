@@ -5,7 +5,7 @@ export const generateTransactionsCSV = (transactions: any[], userName: string) =
     const headers = ['Data', 'Descricao', 'Categoria', 'Valor', 'Tipo', 'Metodo de Pagamento'];
 
     const rows = transactions.map(t => [
-        format(new Date(t.date), 'dd/MM/yyyy'),
+        format(new Date(t.date + 'T12:00:00'), 'dd/MM/yyyy'),
         t.description.replace(/,/g, ''), // remove commas to avoid breaking CSV
         t.category,
         t.amount.toString().replace('.', ','), // use comma as decimal separator for Brazilian Excel

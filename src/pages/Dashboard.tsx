@@ -149,7 +149,7 @@ export default function Dashboard() {
               onAddGoal={handleAddGoal}
               onDownloadReport={async () => {
                 const monthTransactions = transactions.filter(t => {
-                  const date = new Date(t.date);
+                  const date = new Date(t.date + 'T12:00:00');
                   return date >= startOfMonth(new Date()) && date <= endOfMonth(new Date());
                 });
                 await generateTransactionsPDF(
