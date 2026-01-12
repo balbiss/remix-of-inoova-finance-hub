@@ -3,12 +3,15 @@ import { Sun, Moon, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useIsPro } from '@/hooks/useIsPro';
 import { NotificationPopover } from './NotificationPopover';
 import { VenuxWrapped } from './VenuxWrapped';
+import { Badge } from '@/components/ui/badge';
 
 export function DashboardHeader() {
   const [isDark, setIsDark] = useState(true);
   const { profile } = useAuth();
+  const { isPro } = useIsPro();
 
   useEffect(() => {
     const isDarkMode = document.documentElement.classList.contains('dark');
@@ -38,21 +41,28 @@ export function DashboardHeader() {
       animate={{ opacity: 1, y: 0 }}
       className="flex items-center justify-between px-4 lg:px-6 py-3 lg:py-4"
     >
-      <div>
-        <p className="text-xs text-muted-foreground">{getGreeting()}</p>
-        <h1 className="text-lg lg:text-xl font-bold text-foreground">
-          {firstName} 👋
-        </h1>
+      <div className="flex flex-col">
+        <p className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">{getGreeting()}</p>
+        <div className="flex items-center gap-2">
+          <h1 className="text-lg lg:text-xl font-black text-foreground uppercase italic tracking-tighter">
+            {firstName}
+          </h1>
+          {isPro && (
+            <Badge className="bg-primary/20 text-primary border-primary/30 text-[8px] font-black uppercase tracking-widest h-4 px-1.5 animate-pulse">
+              PRO
+            </Badge>
+          )}
+        </div>
       </div>
 
       <div className="flex items-center gap-1.5">
         <Button
           variant="ghost"
           onClick={() => setShowWrapped(true)}
-          className="hidden sm:flex items-center gap-2 h-9 px-4 rounded-xl text-primary bg-primary/10 hover:bg-primary/20 border border-primary/20 transition-all group"
+          className="flex items-center gap-2 h-9 px-3 lg:px-4 rounded-xl text-primary bg-primary/10 hover:bg-primary/20 border border-primary/20 transition-all group"
         >
           <Sparkles className="w-4 h-4 group-hover:rotate-12 transition-transform" />
-          <span className="text-[10px] font-black uppercase italic tracking-wider">Ver Insights</span>
+          <span className="text-[9px] lg:text-[10px] font-black uppercase italic tracking-wider whitespace-nowrap">Insights</span>
         </Button>
         <NotificationPopover />
         <Button

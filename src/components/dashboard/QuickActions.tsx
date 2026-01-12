@@ -10,10 +10,12 @@ interface QuickAction {
   onClick?: () => void;
 }
 
+import { useNavigate } from 'react-router-dom';
+
 const actions: QuickAction[] = [
   { icon: Plus, label: 'Gasto', color: 'expense' },
   { icon: Bell, label: 'Alerta', color: 'ai' },
-  { icon: Target, label: 'Meta', color: 'primary' },
+  { icon: Icons.ShoppingBag, label: 'Assinaturas', color: 'primary' },
   { icon: Icons.FileDown, label: 'Relatório', color: 'income' },
 ];
 
@@ -33,12 +35,15 @@ interface QuickActionsProps {
 }
 
 export function QuickActions({ onAddExpense, onAddReminder, onAddGoal, onDownloadReport, className }: QuickActionsProps) {
+  const navigate = useNavigate();
+
   const handleActionClick = (label: string) => {
     switch (label) {
       case 'Gasto': onAddExpense?.(); break;
       case 'Alerta': onAddReminder?.(); break;
       case 'Meta': onAddGoal?.(); break;
       case 'Relatório': onDownloadReport?.(); break;
+      case 'Assinaturas': navigate('/my-subscriptions'); break;
     }
   };
 
