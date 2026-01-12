@@ -18,6 +18,29 @@ export default function MySubscriptions() {
     const { user } = useAuth();
     const queryClient = useQueryClient();
     const [isAdding, setIsAdding] = useState(false);
+    const [editingSubscription, setEditingSubscription] = useState<any>(null);
+
+    const handleDelete = async (id: string) => {
+        if (!confirm('Deseja realmente excluir esta assinatura?')) return;
+
+        try {
+            const { error } = await supabase
+                .from('recurring_subscriptions')
+                .delete()
+                .eq('id', id);
+
+            if (error) throw error;
+            toast.success('Assinatura excluída!');
+            queryClient.invalidateQueries({ queryKey: ['recurring_subscriptions'] });
+        } catch (error: any) {
+            toast.error('Erro ao excluir: ' + error.message);
+        }
+    };
+
+    const handleEdit = (sub: any) => {
+        setEditingSubscription(sub);
+        setIsAdding(true);
+    };
 
     const { data: subscriptions, isLoading } = useQuery({
         queryKey: ['recurring_subscriptions'],
@@ -68,7 +91,10 @@ export default function MySubscriptions() {
                     </motion.div>
 
                     <Button
-                        onClick={() => setIsAdding(true)}
+                        onClick={() => {
+                            setEditingSubscription(null);
+                            setIsAdding(true);
+                        }}
                         className="h-14 px-8 rounded-2xl bg-primary hover:bg-primary/90 text-white font-black uppercase italic tracking-wider transition-all shadow-xl shadow-primary/20 gap-3"
                     >
                         <Plus className="w-5 h-5" />
@@ -138,10 +164,20 @@ export default function MySubscriptions() {
                                             </span>
                                         </div>
                                         <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full hover:bg-primary/10 text-primary">
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-8 w-8 rounded-full hover:bg-primary/10 text-primary"
+                                                onClick={() => handleEdit(sub)}
+                                            >
                                                 <Edit2 className="w-3.5 h-3.5" />
                                             </Button>
-                                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full hover:bg-destructive/10 text-destructive">
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-8 w-8 rounded-full hover:bg-destructive/10 text-destructive"
+                                                onClick={() => handleDelete(sub.id)}
+                                            >
                                                 <Trash2 className="w-3.5 h-3.5" />
                                             </Button>
                                         </div>
@@ -162,7 +198,14 @@ export default function MySubscriptions() {
                     </div>
                 </div>
             </div>
-            <AddSubscriptionSheet open={isAdding} onOpenChange={setIsAdding} />
+            <AddSubscriptionSheet
+                open={isAdding}
+                onOpenChange={(open) => {
+                    setIsAdding(open);
+                    if (!open) setEditingSubscription(null);
+                }}
+                subscription={editingSubscription}
+            />
         </MainLayout>
     );
 }

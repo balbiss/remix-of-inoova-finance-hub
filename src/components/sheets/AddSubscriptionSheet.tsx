@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -20,9 +20,10 @@ import { Loader2, ShoppingBag } from "lucide-react";
 interface AddSubscriptionSheetProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    subscription?: any;
 }
 
-export function AddSubscriptionSheet({ open, onOpenChange }: AddSubscriptionSheetProps) {
+export function AddSubscriptionSheet({ open, onOpenChange, subscription }: AddSubscriptionSheetProps) {
     const { user } = useAuth();
     const queryClient = useQueryClient();
     const [loading, setLoading] = useState(false);
@@ -37,28 +38,63 @@ export function AddSubscriptionSheet({ open, onOpenChange }: AddSubscriptionShee
         }
     });
 
+    useEffect(() => {
+        if (subscription) {
+            reset({
+                name: subscription.name,
+                amount: subscription.amount,
+                billing_cycle: subscription.billing_cycle,
+                next_billing_date: subscription.next_billing_date,
+                category: subscription.category,
+            });
+        } else {
+            reset({
+                name: "",
+                amount: "",
+                billing_cycle: "monthly",
+                next_billing_date: new Date().toISOString().split("T")[0],
+                category: "Entretenimento",
+            });
+        }
+    }, [subscription, reset, open]);
+
     const onSubmit = async (data: any) => {
         if (!user) return;
         setLoading(true);
 
         try {
-            const { error } = await supabase.from("recurring_subscriptions").insert({
-                user_id: user.id,
-                name: data.name,
-                amount: parseFloat(data.amount),
-                billing_cycle: data.billing_cycle,
-                next_billing_date: data.next_billing_date,
-                category: data.category,
-            });
+            if (subscription?.id) {
+                const { error } = await supabase
+                    .from("recurring_subscriptions")
+                    .update({
+                        name: data.name,
+                        amount: parseFloat(data.amount),
+                        billing_cycle: data.billing_cycle,
+                        next_billing_date: data.next_billing_date,
+                        category: data.category,
+                        updated_at: new Date().toISOString(),
+                    })
+                    .eq("id", subscription.id);
+                if (error) throw error;
+                toast.success("Assinatura atualizada com sucesso!");
+            } else {
+                const { error } = await supabase.from("recurring_subscriptions").insert({
+                    user_id: user.id,
+                    name: data.name,
+                    amount: parseFloat(data.amount),
+                    billing_cycle: data.billing_cycle,
+                    next_billing_date: data.next_billing_date,
+                    category: data.category,
+                });
+                if (error) throw error;
+                toast.success("Assinatura adicionada com sucesso!");
+            }
 
-            if (error) throw error;
-
-            toast.success("Assinatura adicionada com sucesso!");
             queryClient.invalidateQueries({ queryKey: ["recurring_subscriptions"] });
             reset();
             onOpenChange(false);
         } catch (error: any) {
-            toast.error("Erro ao adicionar assinatura: " + error.message);
+            toast.error("Erro: " + error.message);
         } finally {
             setLoading(false);
         }
@@ -76,14 +112,17 @@ export function AddSubscriptionSheet({ open, onOpenChange }: AddSubscriptionShee
                         <ShoppingBag className="w-6 h-6" />
                     </div>
                     <SheetTitle className="text-2xl font-black uppercase italic tracking-tighter">
-                        Nova Assinatura
+                        {subscription ? "Editar Assinatura" : "Nova Assinatura"}
                     </SheetTitle>
                     <SheetDescription className="text-sm font-medium">
-                        Cadastre um serviço recorrente para que o Venux possa monitorar seus gastos automáticos.
+                        {subscription
+                            ? "Atualize os detalhes do serviço para manter seu controle financeiro preciso."
+                            : "Cadastre um serviço recorrente para que o Venux possa monitorar seus gastos automáticos."}
                     </SheetDescription>
                 </SheetHeader>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                    {/* ... existing fields ... */}
                     <div className="space-y-2">
                         <Label htmlFor="name" className="text-xs font-bold uppercase tracking-wider opacity-60">Nome do Serviço</Label>
                         <Input
@@ -152,7 +191,7 @@ export function AddSubscriptionSheet({ open, onOpenChange }: AddSubscriptionShee
                             disabled={loading}
                             className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 text-white font-black uppercase italic tracking-wider transition-all shadow-xl shadow-primary/20 gap-2"
                         >
-                            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Confirmar Assinatura"}
+                            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (subscription ? "Salvar Alterações" : "Confirmar Assinatura")}
                         </Button>
                     </div>
                 </form>
