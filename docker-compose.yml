@@ -1,6 +1,6 @@
 services:
   venux-web:
-    image: venux-assessor:1.0.3
+    image: venux-assessor:latest
     build:
       context: .
       args:
