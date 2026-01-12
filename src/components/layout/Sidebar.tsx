@@ -109,6 +109,11 @@ export function Sidebar() {
           <LogOut className="w-4 h-4 flex-shrink-0" />
           {!collapsed && <span className="font-medium text-sm">Sair</span>}
         </button>
+        {!collapsed && (
+          <div className="mt-2 px-3 text-[9px] font-bold text-muted-foreground/30 uppercase tracking-tighter text-center">
+            v1.0.2 • Venux Enterprise
+          </div>
+        )}
       </div>
     </motion.aside>
   );
