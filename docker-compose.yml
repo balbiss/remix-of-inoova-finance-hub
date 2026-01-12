@@ -12,6 +12,10 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
       labels:
         - traefik.enable=true
         - traefik.http.routers.venux-https.rule=Host(`venuxacessor.inoovaweb.com.br`)
@@ -19,6 +23,7 @@ services:
         - traefik.http.routers.venux-https.tls.certresolver=letsencryptresolver
         - traefik.http.routers.venux-https.service=venux
         - traefik.http.services.venux.loadbalancer.server.port=80
+        - venux.version=1.0.1
 
 networks:
   inoovawebpro:
