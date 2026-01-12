@@ -179,6 +179,59 @@ export type Database = {
           },
         ]
       }
+      recurring_subscriptions: {
+        Row: {
+          amount: number
+          billing_cycle: string
+          category: string | null
+          created_at: string | null
+          currency: string
+          id: string
+          name: string
+          next_billing_date: string
+          status: string | null
+          updated_at: string | null
+          user_id: string
+          icon: string | null
+        }
+        Insert: {
+          amount?: number
+          billing_cycle?: string
+          category?: string | null
+          created_at?: string | null
+          currency?: string
+          id?: string
+          name: string
+          next_billing_date: string
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+          icon?: string | null
+        }
+        Update: {
+          amount?: number
+          billing_cycle?: string
+          category?: string | null
+          created_at?: string | null
+          currency?: string
+          id?: string
+          name?: string
+          next_billing_date?: string
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+          icon?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recurring_subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

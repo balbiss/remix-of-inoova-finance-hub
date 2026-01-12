@@ -1,6 +1,6 @@
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, ArrowLeftRight, Bell, Target, User, LogOut, Sparkles, ChevronLeft, ChevronRight, CreditCard } from 'lucide-react';
+import { LayoutDashboard, ArrowLeftRight, Bell, Target, User, LogOut, Sparkles, ChevronLeft, ChevronRight, CreditCard, ShoppingBag } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import { useAuth } from '@/contexts/AuthContext';
 const financeItems = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/transactions', label: 'Transações', icon: ArrowLeftRight },
+  { path: '/my-subscriptions', label: 'Assinaturas', icon: ShoppingBag },
   { path: '/reminders', label: 'Assistente IA', icon: Sparkles },
   { path: '/goals', label: 'Metas', icon: Target },
 ];

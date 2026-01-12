@@ -23,18 +23,23 @@ import {
   CreditCard,
   ArrowRight,
   Calendar,
+  FileSpreadsheet,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Label as UILabel } from '@/components/ui/label';
+import { useTransactions } from '@/hooks/useTransactions';
+import { generateTransactionsCSV } from '@/lib/csv-generator';
+import { startOfMonth, endOfMonth } from 'date-fns';
 
 
 export default function Profile() {
   const { user, signOut } = useAuth();
   const { profile, isLoading, updateProfile, isUpdating } = useProfile();
   const { isPro, handleUpgrade } = useIsPro();
+  const { transactions } = useTransactions();
   const [whatsapp, setWhatsapp] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
@@ -203,6 +208,36 @@ export default function Profile() {
                   <p className="text-xs lg:text-sm text-ai font-medium leading-tight">
                     Mantenha seu WhatsApp atualizado para receber relatórios de insights da IA e lembretes de metas diretamente no celular.
                   </p>
+                </div>
+
+                <div className="pt-6 border-t border-border/50">
+                  <h3 className="text-[10px] lg:text-xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-4">
+                    Ferramentas de Exportação
+                  </h3>
+                  <div className="p-6 rounded-3xl bg-secondary/20 border border-border/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-income/10 text-income flex items-center justify-center">
+                        <FileSpreadsheet className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-black text-foreground uppercase italic">Exportação para Contador</p>
+                        <p className="text-xs text-muted-foreground font-medium">Gere um CSV de todas as transações deste mês.</p>
+                      </div>
+                    </div>
+                    <Button
+                      onClick={() => {
+                        const monthTransactions = transactions.filter(t => {
+                          const date = new Date(t.date);
+                          return date >= startOfMonth(new Date()) && date <= endOfMonth(new Date());
+                        });
+                        generateTransactionsCSV(monthTransactions, profile?.full_name || 'Usuario');
+                        toast.success('Exportação concluída! Verifique seus downloads.');
+                      }}
+                      className="h-11 px-6 rounded-xl bg-income hover:bg-income/90 text-white font-bold text-xs gap-2"
+                    >
+                      Exportar CSV
+                    </Button>
+                  </div>
                 </div>
               </div>
 

@@ -12,6 +12,7 @@ import Reminders from "./pages/Reminders";
 import Goals from "./pages/Goals";
 import Profile from "./pages/Profile";
 import Subscription from "./pages/Subscription";
+import MySubscriptions from "./pages/MySubscriptions";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
 
@@ -63,6 +64,11 @@ const App = () => (
             <Route path="/subscription" element={
               <ProtectedRoute>
                 <Subscription />
+              </ProtectedRoute>
+            } />
+            <Route path="/my-subscriptions" element={
+              <ProtectedRoute>
+                <MySubscriptions />
               </ProtectedRoute>
             } />
             <Route path="/profile" element={
