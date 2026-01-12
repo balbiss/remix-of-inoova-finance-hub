@@ -111,7 +111,7 @@ export function Sidebar() {
         </button>
         {!collapsed && (
           <div className="mt-2 px-3 text-[9px] font-bold text-muted-foreground/30 uppercase tracking-tighter text-center">
-            v1.0.2 • Venux Enterprise
+            v1.0.3 • Venux Enterprise
           </div>
         )}
       </div>

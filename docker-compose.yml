@@ -23,7 +23,7 @@ services:
         - traefik.http.routers.venux-https.tls.certresolver=letsencryptresolver
         - traefik.http.routers.venux-https.service=venux
         - traefik.http.services.venux.loadbalancer.server.port=80
-        - venux.version=1.0.2
+        - venux.version=1.0.3
 
 networks:
   inoovawebpro:
