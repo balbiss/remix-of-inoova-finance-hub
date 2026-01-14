@@ -92,7 +92,7 @@ export function InstallPrompt() {
 
                             <div className="space-y-2">
                                 <h3 className="font-black text-xl tracking-tight uppercase italic">
-                                    Venux <span className="text-ai">no seu Celular</span>
+                                    Venux <span className="text-ai">Acessor</span>
                                 </h3>
                                 <p className="text-sm text-muted-foreground leading-relaxed">
                                     Instale para ter acesso instantâneo e não perder nenhum alerta de vencimento.
