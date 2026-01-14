@@ -6,7 +6,12 @@ create extension if not exists pg_cron;
 create extension if not exists pg_net;
 
 -- 2. Unschedule if exists to allow safe re-runs
-select cron.unschedule('send-daily-reminders');
+do $$
+begin
+  if exists (select 1 from cron.job where jobname = 'send-daily-reminders') then
+    perform cron.unschedule('send-daily-reminders');
+  end if;
+end $$;
 
 -- 3. Schedule the job
 -- This job calls the Edge Function at 12:00 UTC (09:00 AM Brasilia Time)
