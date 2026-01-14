@@ -24,15 +24,14 @@ export function InstallPrompt() {
 
         if (isIosDevice) {
             setIsIOS(true);
-            // Delay showing on iOS to not be annoying immediately
-            setTimeout(() => setShowPrompt(true), 3000);
+            setShowPrompt(true);
         }
 
         // 3. Check for Android/Chrome (beforeinstallprompt)
         const handleBeforeInstallPrompt = (e: any) => {
             e.preventDefault(); // Prevent mini-infobar
             setDeferredPrompt(e);
-            setTimeout(() => setShowPrompt(true), 3000);
+            setShowPrompt(true);
         };
 
         window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
