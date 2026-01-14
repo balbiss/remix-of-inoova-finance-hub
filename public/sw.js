@@ -6,7 +6,7 @@ self.addEventListener('push', function (event) {
             icon: data.icon || '/venux-push-icon.png',
             badge: data.badge || '/venux-badge.png',
             vibrate: [200, 100, 200],
-            tag: data.tag || 'venux-reminder',
+            tag: data.id || 'venux-reminder',
             renotify: true,
             data: {
                 url: data.url || '/'

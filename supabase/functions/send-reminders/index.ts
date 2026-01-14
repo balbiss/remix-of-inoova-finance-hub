@@ -59,6 +59,7 @@ Deno.serve(async (req) => {
             for (const sub of (subs || [])) {
                 try {
                     const payload = JSON.stringify({
+                        id: reminder.id,
                         title: `Lembrete: ${reminder.title}`,
                         body: `Valor: R$ ${reminder.valor || '0,00'} - Vence hoje! 💸`,
                         url: `https://venuxacessor.inoovaweb.com.br/reminders`
