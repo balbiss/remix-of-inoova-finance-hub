@@ -301,16 +301,31 @@ export default function Reminders() {
                 <AlertDialogTitle>O que deseja fazer?</AlertDialogTitle>
                 <AlertDialogDescription>Escolha uma ação para o lembrete <b>{selectedReminder.title}</b>.</AlertDialogDescription>
               </AlertDialogHeader>
-              <AlertDialogFooter>
+              <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+                <Button
+                  className="bg-income hover:bg-income/90 text-white font-bold gap-2 order-first sm:order-none"
+                  onClick={() => {
+                    if (!selectedReminder) return;
+                    updateReminder({ id: selectedReminder.id, status: 'completed' }, {
+                      onSuccess: () => {
+                        toast.success('Lembrete marcado como pago! 🎉');
+                        setSelectedReminder(null);
+                      },
+                      onError: () => toast.error('Erro ao atualizar status'),
+                    });
+                  }}
+                  disabled={isUpdating}
+                >
+                  {isUpdating ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
+                  Marcar como Pago
+                </Button>
                 <Button variant="outline" onClick={() => {
                   setShowEdit(true);
-                  // NÃO limpar selectedReminder aqui!
                 }}>Editar</Button>
                 <Button variant="destructive" onClick={() => {
                   setShowDeleteDialog(true);
-                  // NÃO limpar selectedReminder aqui!
                 }}>Excluir</Button>
-                <AlertDialogCancel onClick={() => setSelectedReminder(null)}>Fechar</AlertDialogCancel>
+                <AlertDialogCancel onClick={() => setSelectedReminder(null)}>Voltar</AlertDialogCancel>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
