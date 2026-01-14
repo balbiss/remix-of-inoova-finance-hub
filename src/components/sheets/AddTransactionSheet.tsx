@@ -25,15 +25,27 @@ const categories = [
   { value: 'Outros', label: 'Outros', icon: Gift },
 ];
 
+import { useIsPro } from '@/hooks/useIsPro';
+import { useNavigate } from 'react-router-dom';
+
 export function AddTransactionSheet({ open, onOpenChange }: AddTransactionSheetProps) {
   const [type, setType] = useState<'income' | 'expense'>('expense');
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const { createTransaction, isCreating } = useTransactions();
+  const { isPro } = useIsPro();
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isPro) {
+      toast.error('Funcionalidade exclusiva para assinantes Pro!');
+      onOpenChange(false);
+      navigate('/subscription');
+      return;
+    }
 
     if (!amount || !description || !category) {
       toast.error('Preencha todos os campos');

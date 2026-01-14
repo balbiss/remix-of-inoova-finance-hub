@@ -27,8 +27,7 @@ import { useQueryClient } from '@tanstack/react-query';
 export default function Subscription() {
     const { profile, isLoading } = useProfile();
     const { isPro, handleUpgrade, handleManageBilling } = useIsPro();
-    const [isSyncing, setIsSyncing] = useState(false);
-    const queryClient = useQueryClient();
+    const [selectedPlan, setSelectedPlan] = useState<'MENSAL' | 'TRIMESTRAL'>('MENSAL');
 
     const handleSync = async () => {
         setIsSyncing(true);
@@ -74,7 +73,7 @@ export default function Subscription() {
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                 >
-                    <h1 className="text-2xl lg:text-4xl font-black text-foreground tracking-tighter uppercase italic">
+                    <h1 className="text-xl lg:text-3xl font-black text-foreground tracking-tighter uppercase italic">
                         Sua <span className="text-ai">Jornada PRO</span>
                     </h1>
                     <p className="text-sm lg:text-base text-muted-foreground mt-2">Gerencie sua assinatura e sinta o poder da gestão profissional.</p>
@@ -110,7 +109,7 @@ export default function Subscription() {
                                             )}>
                                                 {isPro ? 'Membro Premium' : 'Conta Gratuita'}
                                             </Badge>
-                                            <h2 className="text-2xl lg:text-4xl font-black text-foreground tracking-tighter uppercase">
+                                            <h2 className="text-xl lg:text-3xl font-black text-foreground tracking-tighter uppercase">
                                                 {profile?.plano_nome || (isPro ? 'Plano PRO' : 'Assinatura Free')}
                                             </h2>
                                         </div>
@@ -168,13 +167,42 @@ export default function Subscription() {
                                     </div>
 
                                     {!isPro ? (
-                                        <Button
-                                            onClick={() => handleUpgrade(STRIPE_PLANS.MENSAL.id)}
-                                            className="w-full h-14 rounded-[24px] gradient-primary border-0 font-black text-base group shadow-xl shadow-primary/20"
-                                        >
-                                            Assinar Agora
-                                            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" />
-                                        </Button>
+                                        <div className="space-y-3">
+                                            <div className="grid grid-cols-2 gap-2 p-1 bg-muted/30 rounded-[20px]">
+                                                <button
+                                                    onClick={() => setSelectedPlan('MENSAL')}
+                                                    className={cn(
+                                                        "py-2 px-3 rounded-[16px] text-xs font-bold transition-all duration-300",
+                                                        selectedPlan === 'MENSAL'
+                                                            ? "bg-background text-foreground shadow-sm scale-100"
+                                                            : "text-muted-foreground hover:bg-background/50 scale-95"
+                                                    )}
+                                                >
+                                                    Mensal
+                                                    <span className="block text-[9px] font-normal opacity-70">R$ 39,90</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => setSelectedPlan('TRIMESTRAL')}
+                                                    className={cn(
+                                                        "py-2 px-3 rounded-[16px] text-xs font-bold transition-all duration-300 relative overflow-hidden",
+                                                        selectedPlan === 'TRIMESTRAL'
+                                                            ? "bg-background text-foreground shadow-sm scale-100"
+                                                            : "text-muted-foreground hover:bg-background/50 scale-95"
+                                                    )}
+                                                >
+                                                    <div className="absolute inset-0 bg-primary/5 opacity-50" />
+                                                    Trimestral
+                                                    <span className="block text-[9px] font-normal opacity-70">R$ 89,90</span>
+                                                </button>
+                                            </div>
+                                            <Button
+                                                onClick={() => handleUpgrade(STRIPE_PLANS[selectedPlan].id)}
+                                                className="w-full h-14 rounded-[24px] gradient-primary border-0 font-black text-base group shadow-xl shadow-primary/20"
+                                            >
+                                                Assinar {selectedPlan === 'MENSAL' ? 'Mensal' : 'Trimestral'}
+                                                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" />
+                                            </Button>
+                                        </div>
                                     ) : (
                                         <Button
                                             variant="outline"

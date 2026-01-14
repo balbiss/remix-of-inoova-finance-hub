@@ -6,6 +6,7 @@ import { VenuxAgent } from '@/components/VenuxAgent';
 import { AddTransactionSheet } from '@/components/sheets/AddTransactionSheet';
 import { useIsPro } from '@/hooks/useIsPro';
 import { UpgradeDialog } from '@/components/UpgradeDialog';
+import { InstallPrompt } from '@/components/pwa/InstallPrompt';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -39,6 +40,7 @@ export function MainLayout({ children }: MainLayoutProps) {
 
   return (
     <div className="flex min-h-screen w-full bg-background">
+      <InstallPrompt />
       <Sidebar />
       <VenuxAgent />
       <div className="flex-1 flex flex-col min-w-0">

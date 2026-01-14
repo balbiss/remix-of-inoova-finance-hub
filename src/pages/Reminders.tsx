@@ -14,12 +14,13 @@ import { ptBR } from 'date-fns/locale';
 import { formatCurrency } from '@/lib/utils-format';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { useReminders } from '@/hooks/useReminders';
+import { usePushNotifications } from '@/hooks/usePushNotifications';
 import { useIsPro } from '@/hooks/useIsPro';
 import { UpgradeDialog } from '@/components/UpgradeDialog';
 import { cn } from '@/lib/utils';
 import {
   Bell, Plus, Clock, CheckCircle2, AlertCircle, Calendar,
-  MessageCircle, Send, Loader2, Pencil, Trash2, ArrowRight
+  MessageCircle, Send, Loader2, Pencil, Trash2, ArrowRight, BellOff
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -57,6 +58,7 @@ export default function Reminders() {
 
   const { isPro } = useIsPro();
   const { reminders, isLoading, pendingCount, sentCount, createReminder, updateReminder, deleteReminder, isCreating, isUpdating, isDeleting } = useReminders(filter === 'all' ? undefined : filter);
+  const { subscribeToPush, unsubscribeFromPush, subscription } = usePushNotifications();
 
   // Removido: handleSubmit duplicado, AddReminderSheet já faz isso
 
@@ -204,6 +206,18 @@ export default function Reminders() {
                 <Plus className="w-4 h-4" /> Novo Lembrete
               </Button>
             </div>
+
+            <div className="mt-4 flex items-center justify-center">
+              {subscription ? (
+                <Button variant="ghost" size="sm" onClick={unsubscribeFromPush} className="text-[10px] text-muted-foreground hover:bg-muted/50 hover:text-foreground rounded-full gap-1.5 h-7 px-3 border border-border/40">
+                  <BellOff className="w-3 h-3" /> <span className="opacity-70">Silenciar</span>
+                </Button>
+              ) : (
+                <Button variant="outline" size="sm" onClick={subscribeToPush} className="text-[10px] bg-secondary/20 hover:bg-secondary/40 text-secondary-foreground border-secondary/20 rounded-full gap-1.5 h-7 px-3">
+                  <Bell className="w-3 h-3" /> Receber Alertas
+                </Button>
+              )}
+            </div>
           </div>
         </motion.div>
 
@@ -216,7 +230,7 @@ export default function Reminders() {
           {/* Filtros podem ser expandidos futuramente */}
         </motion.div>
 
-        <div className="space-y-1 sm:space-y-2 w-full max-w-full flex flex-col">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 auto-rows-fr">
           {filteredReminders.map((reminder, index) => {
             const status = statusConfig[reminder.status as keyof typeof statusConfig] || statusConfig.pending;
             // Ícone especial para completed
@@ -240,8 +254,8 @@ export default function Reminders() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 + index * 0.05 }}
-                whileHover={{ scale: 1.01 }}
-                className="bg-card border border-border rounded-lg p-1.5 sm:p-2 cursor-pointer w-full max-w-full mx-0 flex flex-col items-start text-left shadow-none relative min-h-[56px]"
+                whileHover={{ scale: 1.02 }}
+                className="bg-card border border-border rounded-xl p-3 sm:p-4 lg:p-5 cursor-pointer w-full mx-0 flex flex-col items-start text-left shadow-sm hover:shadow-md transition-all relative h-full min-h-[120px]"
                 style={{ minWidth: 0 }}
                 onClick={() => setSelectedReminder(reminder)}
               >
@@ -257,21 +271,21 @@ export default function Reminders() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center w-full mb-0.5 min-h-[28px]">
                       <div className="flex-1 min-w-0 flex flex-col">
-                        <h3 className="text-base font-semibold text-foreground break-words mr-2">{reminder.title}</h3>
+                        <h3 className="text-base lg:text-lg font-bold text-foreground break-words mr-2 leading-tight">{reminder.title}</h3>
                         {reminder.valor != null && (
-                          <span className="text-sm text-muted-foreground mr-2">{formatCurrency(reminder.valor)}</span>
+                          <span className="text-sm lg:text-base text-muted-foreground mr-2 font-medium">{formatCurrency(reminder.valor)}</span>
                         )}
                       </div>
                     </div>
-                    <div className="absolute top-2 right-2">
-                      <Badge variant="outline" className={cn('shrink-0 text-[10px] px-1 py-0.5', status.className)}>{status.label}</Badge>
+                    <div className="absolute top-3 right-3 lg:top-4 lg:right-4">
+                      <Badge variant="outline" className={cn('shrink-0 text-[10px] lg:text-xs px-2 py-0.5', status.className)}>{status.label}</Badge>
                     </div>
-                    <div className="flex items-center text-[13px] sm:text-[13px] text-muted-foreground w-full gap-2 mt-0.5">
-                      <div className="flex items-center gap-1"><Calendar className="w-3 h-3" style={{ color: '#fff', fill: '#fff' }} />{brDate}</div>
-                      <div className="flex items-center gap-1"><Clock className="w-3 h-3" style={{ color: '#fff', fill: '#fff' }} />{brTime}</div>
+                    <div className="flex items-center text-[13px] sm:text-[13px] text-muted-foreground w-full gap-2 mt-2">
+                      <div className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />{brDate}</div>
+                      <div className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{brTime}</div>
                     </div>
-                    <div className="absolute bottom-2 right-3 flex items-center gap-1.5 text-income text-[11px] font-black bg-income/10 px-2 py-0.5 rounded-full border border-income/20">
-                      <MessageCircle className="w-3 h-3" />WHATSAPP
+                    <div className="absolute bottom-3 right-3 lg:bottom-4 lg:right-4 flex items-center gap-1.5 text-income text-[11px] lg:text-xs font-black bg-income/10 px-2 py-1 rounded-full border border-income/20 hover:bg-income/20 transition-colors">
+                      <MessageCircle className="w-3.5 h-3.5" />WHATSAPP
                     </div>
                   </div>
                 </div>

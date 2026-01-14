@@ -18,7 +18,9 @@ import { Wallet, TrendingUp, TrendingDown, Calculator } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { generateTransactionsPDF } from '@/lib/pdf-generator';
 import { useProfile } from '@/hooks/useProfile';
+import { useIsPro } from '@/hooks/useIsPro';
 import { startOfMonth, endOfMonth } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
   const [showAddTransaction, setShowAddTransaction] = useState(false);
@@ -27,7 +29,9 @@ export default function Dashboard() {
   const [showTransfer, setShowTransfer] = useState(false);
   const { transactions, income, expenses, balance, isLoading } = useTransactions();
   const { profile } = useProfile();
+  const { isPro } = useIsPro();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleAddReminder = () => {
     setShowAddReminder(true);
@@ -144,10 +148,30 @@ export default function Dashboard() {
           {/* Desktop Sticky Sidebar (1/4 on Desktop) */}
           <div className="lg:sticky lg:top-8 space-y-4 lg:space-y-6">
             <QuickActions
-              onAddExpense={() => setShowAddTransaction(true)}
+              onAddExpense={() => {
+                if (!isPro) {
+                  toast({
+                    title: "Funcionalidade Premium",
+                    description: "Assine o Pro para lançar despesas ilimitadas.",
+                    variant: "destructive",
+                  });
+                  navigate('/subscription');
+                  return;
+                }
+                setShowAddTransaction(true);
+              }}
               onAddReminder={handleAddReminder}
               onAddGoal={handleAddGoal}
               onDownloadReport={async () => {
+                if (!isPro) {
+                  toast({
+                    title: "Funcionalidade Premium",
+                    description: "Relatórios PDF são exclusivos para membros PRO.",
+                    variant: "destructive",
+                  });
+                  navigate('/subscription');
+                  return;
+                }
                 const monthTransactions = transactions.filter(t => {
                   const date = new Date(t.date + 'T12:00:00');
                   return date >= startOfMonth(new Date()) && date <= endOfMonth(new Date());
