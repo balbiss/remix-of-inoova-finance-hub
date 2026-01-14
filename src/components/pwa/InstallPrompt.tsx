@@ -86,8 +86,8 @@ export function InstallPrompt() {
                         </button>
 
                         <div className="flex flex-col items-center text-center gap-6">
-                            <div className="bg-ai/10 p-4 rounded-2xl">
-                                <Download className="w-8 h-8 text-ai" />
+                            <div className="bg-secondary/20 p-4 rounded-3xl">
+                                <img src="/venux-icon.png" alt="Venux" className="w-16 h-16 object-contain" />
                             </div>
 
                             <div className="space-y-2">
