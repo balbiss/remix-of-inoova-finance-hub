@@ -48,30 +48,48 @@ serve(async (req) => {
                 const session = event.data.object;
                 const customerId = session.customer;
                 const subscriptionId = session.subscription;
+                const userId = session.client_reference_id; // ID do usuário no Supabase
 
-                console.log(`PROCESSANDO checkout.session.completed para cliente: ${customerId}`);
+                console.log(`PROCESSANDO checkout.session.completed para cliente: ${customerId}, UserID: ${userId}`);
 
                 const subscription = await stripe.subscriptions.retrieve(subscriptionId);
                 const priceId = subscription.items.data[0].price.id;
                 const currentPeriodEnd = new Date(subscription.current_period_end * 1000).toISOString();
                 const activationDate = new Date(subscription.created * 1000).toISOString();
 
-                const { error } = await supabaseClient
-                    .from("profiles")
-                    .update({
-                        status_assinatura: "ativo",
-                        stripe_subscription_id: subscriptionId,
-                        stripe_price_id: priceId,
-                        plano_nome: "PRO",
-                        data_expiracao: currentPeriodEnd,
-                        data_ativacao: activationDate,
-                    })
-                    .eq("stripe_customer_id", customerId);
+                // Construção do objeto de atualização
+                const updateData = {
+                    status_assinatura: "ativo",
+                    stripe_subscription_id: subscriptionId,
+                    stripe_price_id: priceId,
+                    plano_nome: "PRO",
+                    data_expiracao: currentPeriodEnd,
+                    data_ativacao: activationDate,
+                    stripe_customer_id: customerId // Garante que o ID do cliente esteja salvo
+                };
+
+                let error;
+
+                // ESTRATÉGIA BLINDADA: Tenta atualizar pelo ID do usuário primeiro (mais seguro)
+                if (userId) {
+                    const result = await supabaseClient
+                        .from("profiles")
+                        .update(updateData)
+                        .eq("id", userId);
+                    error = result.error;
+                } else {
+                    // Fallback para buscar pelo stripe_customer_id (caso antigo)
+                    const result = await supabaseClient
+                        .from("profiles")
+                        .update(updateData)
+                        .eq("stripe_customer_id", customerId);
+                    error = result.error;
+                }
 
                 if (error) {
                     console.error(`ERRO ao atualizar banco de dados: ${error.message}`);
                 } else {
-                    console.log(`SUCESSO: Perfil atualizado para PRO para o cliente ${customerId}`);
+                    console.log(`SUCESSO: Perfil atualizado para PRO | Cliente: ${customerId} | User: ${userId || 'N/A'}`);
                 }
                 break;
             }

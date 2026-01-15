@@ -71,8 +71,9 @@ serve(async (req) => {
       customer: customerId,
       line_items: [{ price: priceId, quantity: 1 }],
       mode: "subscription",
-      allow_promotion_codes: true, // HABILITA O USO DE CUPONS PARA TESTES
+      allow_promotion_codes: true,
       payment_method_types: ["card"],
+      client_reference_id: user.id, // VÍNCULO FORTE: Garante que sabemos quem é o usuário no webhook
       success_url: `${returnUrl}?status=success`,
       cancel_url: `${returnUrl}?status=cancel`,
     });
