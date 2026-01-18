@@ -28,6 +28,7 @@ export default function Subscription() {
     const { profile, isLoading } = useProfile();
     const { isPro, handleUpgrade, handleManageBilling } = useIsPro();
     const [selectedPlan, setSelectedPlan] = useState<'MENSAL' | 'TRIMESTRAL'>('MENSAL');
+    const [isSyncing, setIsSyncing] = useState(false);
 
     const handleSync = async () => {
         setIsSyncing(true);

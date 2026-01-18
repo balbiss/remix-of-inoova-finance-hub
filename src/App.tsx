@@ -13,6 +13,7 @@ import Goals from "./pages/Goals";
 import Profile from "./pages/Profile";
 import Subscription from "./pages/Subscription";
 import MySubscriptions from "./pages/MySubscriptions";
+import PublicReport from "./pages/PublicReport";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
 
@@ -79,6 +80,7 @@ const App = () => (
                 <Profile />
               </ProtectedRoute>
             } />
+            <Route path="/report" element={<PublicReport />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

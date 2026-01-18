@@ -64,6 +64,35 @@ export default function Transactions() {
     return matchesFilter && matchesSearch && matchesDate;
   });
 
+  // Gatilho para gerar PDF automático via URL (vindo do Venux Acessor)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    // 1. Verificar se há parâmetros de data na URL e atualizar o estado
+    const fromParam = params.get('from');
+    const toParam = params.get('to');
+
+    if (fromParam && toParam) {
+      const fromDate = new Date(fromParam);
+      const toDate = new Date(toParam);
+
+      // Só atualiza se for diferente para evitar loop
+      if (dateRange?.from.getTime() !== fromDate.getTime() || dateRange?.to.getTime() !== toDate.getTime()) {
+        setDateRange({ from: fromDate, to: toDate });
+        return; // Espera o próximo ciclo com o estado atualizado
+      }
+    }
+
+    // 2. Acionar o PDF se o parâmetro estiver presente
+    if (params.get('generate_pdf') === 'true' && !isLoading && filteredTransactions.length > 0 && profile) {
+      console.log("PDF: Gatilho automático detectado via URL.");
+      generateTransactionsPDF(filteredTransactions, profile.full_name || 'Usuário', dateRange as any);
+
+      // Limpa a URL para não gerar de novo no refresh
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, [isLoading, filteredTransactions, profile, dateRange]);
+
   const groupedTransactions = filteredTransactions.reduce((acc, transaction) => {
     const date = transaction.date || '';
     if (!acc[date]) acc[date] = [];

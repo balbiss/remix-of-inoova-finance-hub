@@ -50,7 +50,22 @@ export default function Profile() {
   };
 
   const handleSaveWhatsapp = () => {
-    updateProfile({ whatsapp }, {
+    // Remove tudo que não é número
+    const cleanNumber = whatsapp.replace(/\D/g, '');
+
+    if (!cleanNumber) {
+      toast.error('Por favor, insira um número válido');
+      return;
+    }
+
+    // LÓGICA INTERNACIONAL:
+    // Se tiver 10 ou 11 dígitos e não começar com 55, assume que é Brasil
+    let formattedNumber = cleanNumber;
+    if (cleanNumber.length >= 10 && cleanNumber.length <= 11 && !cleanNumber.startsWith('55')) {
+      formattedNumber = `55${cleanNumber}`;
+    }
+
+    updateProfile({ whatsapp: formattedNumber }, {
       onSuccess: () => {
         toast.success('WhatsApp atualizado!');
         setIsEditing(false);
